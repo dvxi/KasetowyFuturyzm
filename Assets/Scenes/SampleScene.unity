@@ -642,6 +642,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Dust
       objectReference: {fileID: 0}
+    - target: {fileID: 7496973674899310266, guid: 2da6e9f8d712ef2468cc76024f14eb6c, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2da6e9f8d712ef2468cc76024f14eb6c, type: 3}
 --- !u!4 &767543538 stripped
@@ -745,6 +749,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 783614439}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!96 &803270149 stripped
+TrailRenderer:
+  m_CorrespondingSourceObject: {fileID: 6007276408784625431, guid: 2da6e9f8d712ef2468cc76024f14eb6c, type: 3}
+  m_PrefabInstance: {fileID: 767543537}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -912,8 +921,10 @@ MonoBehaviour:
   controller: {fileID: 1163743486}
   desiredGravity: -25
   lowerGravityValue: -4.905
-  MovementLerpOnGround: 5
+  MovementLerpOnGround: 15
   MovementLerpInAir: 2
+  BoostLerp: 5
+  SpeedParticles: {fileID: 803270149}
   speed: 11
   jumpHeight: 2.8
   groundCheck: {fileID: 725447493}

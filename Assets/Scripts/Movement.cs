@@ -14,6 +14,10 @@ public class Movement : MonoBehaviour
     float MovementLerpOnGround;
     [SerializeField]
     float MovementLerpInAir;
+    [SerializeField]
+    float BoostLerp;
+    [SerializeField]
+    TrailRenderer SpeedParticles;
 
     public float speed = 12f;
     float gravity = -9.81f;
@@ -38,12 +42,18 @@ public class Movement : MonoBehaviour
     {
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
+        if (speed <= 12.05f)
+        {
+            SpeedParticles.emitting = false;
+            Debug.Log("dd");
+        }
+
         if(isGrounded && velocity.y < 0)
         {
             //if(!inArea) 
             //Time.timeScale = 1f;
             //velocity.y = -2f;
-            gravity = -25f;
+            if (!inArea) gravity = -25f;
             x = Mathf.Lerp(x, Input.GetAxis("Horizontal"), Time.deltaTime * MovementLerpOnGround);
             z = Mathf.Lerp(z, Input.GetAxis("Vertical"), Time.deltaTime * MovementLerpOnGround);
         } 
@@ -55,8 +65,9 @@ public class Movement : MonoBehaviour
 
         if(!inArea)
         {
-            Time.timeScale = Mathf.Lerp(Time.timeScale, 1f, Time.deltaTime);
-            gravity = Mathf.Lerp(gravity, -25f, Time.deltaTime);
+            //Time.timeScale = Mathf.Lerp(Time.timeScale, 1f, Time.deltaTime * MovementLerpOnGround);
+            gravity = Mathf.Lerp(gravity, -25f, Time.deltaTime * BoostLerp);
+            speed = Mathf.Lerp(speed, 12f, Time.deltaTime * BoostLerp);
         }
 
         Vector3 move = transform.right * x + transform.forward * z;
@@ -77,19 +88,23 @@ public class Movement : MonoBehaviour
     {
         if(other.tag == "Boost")
         {
-            /*
+            
             inArea = true;
+            /*
             Time.timeScale = 2f;
-            setTimeScale = 2f;
-            gravity = lowerGravityValue;*/
+            setTimeScale = 2f;*/
+            gravity = lowerGravityValue;
             speed *= 2f;
+            SpeedParticles.emitting = true;
         } 
         else if(other.tag == "Slow")
         {
             inArea = true;
+            /*
             Time.timeScale = .5f;
-            setTimeScale = .5f;
+            setTimeScale = .5f;*/
             gravity = lowerGravityValue;
+            speed *= .5f;
         }
     }
 
