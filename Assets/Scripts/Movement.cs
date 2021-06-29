@@ -15,21 +15,16 @@ public class Movement : MonoBehaviour
     public LayerMask groundMask, sphereMask;
 
     Vector3 velocity;
-    bool isGrounded;
+    bool isGrounded, inArea;
     void Update()
     {
-        Time.timeScale = 1f;
-
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
-        if (Physics.CheckSphere(groundCheck.position, groundDistance, sphereMask))
-        {
-            Time.timeScale = 2f;
-            gravity = -4.405f;
-        }
 
-        if(isGrounded && velocity.y < 0)
+        if(isGrounded && velocity.y < 0 && !inArea)
         {
+            Time.timeScale = 1f;
             velocity.y = -2f;
+            gravity = -25f;
         }
 
         float x = Input.GetAxis("Horizontal");
@@ -39,15 +34,40 @@ public class Movement : MonoBehaviour
 
         controller.Move(move * speed * Time.deltaTime);
 
-        //gameObject.GetComponent<Rigidbody>().AddForce(move * Time.deltaTime);
-
         if(Input.GetButtonDown("Jump") && isGrounded)
         {
-            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+            velocity.y = Mathf.Sqrt(jumpHeight * -2f * -9.81f);
         }
 
         velocity.y += gravity * Time.deltaTime;
 
         controller.Move(velocity * Time.deltaTime);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.tag == "Boost")
+        {
+            inArea = true;
+            Time.timeScale = 2f;
+            gravity = -4.905f;
+        } 
+        else if(other.tag == "Slow")
+        {
+            inArea = true;
+            Time.timeScale = .5f;
+            gravity = -4.905f;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "Boost" || other.tag == "Slow") inArea = false;
+        if (other.tag == "Slow")
+        {
+            Time.timeScale = 1f;
+            velocity.y = -2f;
+            gravity = -25f;
+        }
     }
 }
