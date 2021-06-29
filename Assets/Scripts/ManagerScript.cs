@@ -24,7 +24,7 @@ public class ManagerScript : MonoBehaviour
         
         activeAreas.Add(temp);
 
-        //Debug.Log(activeAreas.Count);
+        //D+ebug.Log(activeAreas.Count);
 
         if (activeAreas.Count > 3)
         {

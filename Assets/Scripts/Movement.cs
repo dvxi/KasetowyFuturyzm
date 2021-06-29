@@ -6,8 +6,17 @@ public class Movement : MonoBehaviour
 {
     public CharacterController controller;
 
+    [SerializeField]
+    float desiredGravity = -25f;
+    [SerializeField]
+    float lowerGravityValue = -4.905f;
+    [SerializeField]
+    float MovementLerpOnGround;
+    [SerializeField]
+    float MovementLerpInAir;
+
     public float speed = 12f;
-    public float gravity = -9.81f;
+    float gravity = -9.81f;
     public float jumpHeight = 3f;
 
     public Transform groundCheck;
@@ -16,19 +25,39 @@ public class Movement : MonoBehaviour
 
     Vector3 velocity;
     bool isGrounded, inArea;
+    float setTimeScale;
+
+    float x = 0, z = 0;
+
+    private void Start()
+    {
+        gravity = desiredGravity;
+    }
+
     void Update()
     {
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
-        if(isGrounded && velocity.y < 0 && !inArea)
+        if(isGrounded && velocity.y < 0)
         {
-            Time.timeScale = 1f;
-            velocity.y = -2f;
+            //if(!inArea) 
+            //Time.timeScale = 1f;
+            //velocity.y = -2f;
             gravity = -25f;
+            x = Mathf.Lerp(x, Input.GetAxis("Horizontal"), Time.deltaTime * MovementLerpOnGround);
+            z = Mathf.Lerp(z, Input.GetAxis("Vertical"), Time.deltaTime * MovementLerpOnGround);
+        } 
+        else
+        {
+            x = Mathf.Lerp(x, Input.GetAxis("Horizontal"), Time.deltaTime * MovementLerpInAir);
+            z = Mathf.Lerp(z, Input.GetAxis("Vertical"), Time.deltaTime * MovementLerpInAir);
         }
 
-        float x = Input.GetAxis("Horizontal");
-        float z = Input.GetAxis("Vertical");
+        if(!inArea)
+        {
+            Time.timeScale = Mathf.Lerp(Time.timeScale, 1f, Time.deltaTime);
+            gravity = Mathf.Lerp(gravity, -25f, Time.deltaTime);
+        }
 
         Vector3 move = transform.right * x + transform.forward * z;
 
@@ -48,15 +77,19 @@ public class Movement : MonoBehaviour
     {
         if(other.tag == "Boost")
         {
+            /*
             inArea = true;
             Time.timeScale = 2f;
-            gravity = -4.905f;
+            setTimeScale = 2f;
+            gravity = lowerGravityValue;*/
+            speed *= 2f;
         } 
         else if(other.tag == "Slow")
         {
             inArea = true;
             Time.timeScale = .5f;
-            gravity = -4.905f;
+            setTimeScale = .5f;
+            gravity = lowerGravityValue;
         }
     }
 
