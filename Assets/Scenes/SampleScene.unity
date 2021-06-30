@@ -921,10 +921,13 @@ MonoBehaviour:
   controller: {fileID: 1163743486}
   desiredGravity: -25
   lowerGravityValue: -4.905
+  desiredSpeed: 12
   MovementLerpOnGround: 15
   MovementLerpInAir: 2
   BoostLerp: 5
   SpeedParticles: {fileID: 803270149}
+  boostColor: {r: 1, g: 0.39607844, b: 0, a: 1}
+  slowColor: {r: 0.19339621, g: 0.23726773, b: 1, a: 1}
   speed: 11
   jumpHeight: 2.8
   groundCheck: {fileID: 725447493}

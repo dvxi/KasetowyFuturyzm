@@ -11,17 +11,25 @@ public class Movement : MonoBehaviour
     [SerializeField]
     float lowerGravityValue = -4.905f;
     [SerializeField]
+    float desiredSpeed = 12f;
+    [SerializeField]
     float MovementLerpOnGround;
     [SerializeField]
     float MovementLerpInAir;
     [SerializeField]
     float BoostLerp;
+
     [SerializeField]
     TrailRenderer SpeedParticles;
+    [SerializeField]
+    Color boostColor;
+    [SerializeField]
+    Color slowColor;
 
     public float speed = 12f;
     float gravity = -9.81f;
     public float jumpHeight = 3f;
+    float movementLerpSpeed;
 
     public Transform groundCheck;
     public float groundDistance = 0.4f;
@@ -36,43 +44,33 @@ public class Movement : MonoBehaviour
     private void Start()
     {
         gravity = desiredGravity;
+        speed = desiredSpeed;
     }
 
     void Update()
     {
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
-        if (speed <= 12.05f)
+        if (Mathf.Abs(speed - desiredSpeed) <= 0.05f) //normal speed reached
         {
             SpeedParticles.emitting = false;
-            Debug.Log("dd");
         }
 
-        if(isGrounded && velocity.y < 0)
+        if (isGrounded && velocity.y < 0) movementLerpSpeed = MovementLerpOnGround; //delay of movement vector change
+        else movementLerpSpeed = MovementLerpInAir;
+
+        x = Mathf.Lerp(x, Input.GetAxis("Horizontal"), Time.deltaTime * movementLerpSpeed);
+        z = Mathf.Lerp(z, Input.GetAxis("Vertical"), Time.deltaTime * movementLerpSpeed);
+
+        if (!inArea)
         {
-            //if(!inArea) 
-            //Time.timeScale = 1f;
-            //velocity.y = -2f;
-            if (!inArea) gravity = -25f;
-            x = Mathf.Lerp(x, Input.GetAxis("Horizontal"), Time.deltaTime * MovementLerpOnGround);
-            z = Mathf.Lerp(z, Input.GetAxis("Vertical"), Time.deltaTime * MovementLerpOnGround);
-        } 
-        else
-        {
-            x = Mathf.Lerp(x, Input.GetAxis("Horizontal"), Time.deltaTime * MovementLerpInAir);
-            z = Mathf.Lerp(z, Input.GetAxis("Vertical"), Time.deltaTime * MovementLerpInAir);
+            gravity = Mathf.Lerp(gravity, desiredGravity, Time.deltaTime * BoostLerp); //lerp gravity and speed values to normal
+            speed = Mathf.Lerp(speed, desiredSpeed, Time.deltaTime * BoostLerp);
         }
 
-        if(!inArea)
-        {
-            //Time.timeScale = Mathf.Lerp(Time.timeScale, 1f, Time.deltaTime * MovementLerpOnGround);
-            gravity = Mathf.Lerp(gravity, -25f, Time.deltaTime * BoostLerp);
-            speed = Mathf.Lerp(speed, 12f, Time.deltaTime * BoostLerp);
-        }
+        Vector3 move = transform.right * x + transform.forward * z; //set move vector
 
-        Vector3 move = transform.right * x + transform.forward * z;
-
-        controller.Move(move * speed * Time.deltaTime);
+        controller.Move(move * speed * Time.deltaTime); //move
 
         if(Input.GetButtonDown("Jump") && isGrounded)
         {
@@ -90,32 +88,25 @@ public class Movement : MonoBehaviour
         {
             
             inArea = true;
-            /*
-            Time.timeScale = 2f;
-            setTimeScale = 2f;*/
+
             gravity = lowerGravityValue;
             speed *= 2f;
             SpeedParticles.emitting = true;
+            SpeedParticles.startColor = boostColor;
         } 
         else if(other.tag == "Slow")
         {
             inArea = true;
-            /*
-            Time.timeScale = .5f;
-            setTimeScale = .5f;*/
+
             gravity = lowerGravityValue;
             speed *= .5f;
+            SpeedParticles.emitting = true;
+            SpeedParticles.startColor = slowColor;
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
         if (other.tag == "Boost" || other.tag == "Slow") inArea = false;
-        if (other.tag == "Slow")
-        {
-            Time.timeScale = 1f;
-            velocity.y = -2f;
-            gravity = -25f;
-        }
     }
 }

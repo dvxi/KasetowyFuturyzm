@@ -30,7 +30,7 @@ public class ShootScript : MonoBehaviour
         bullet.transform.position = spawnPoint.position;
         bullet.transform.rotation = transform.rotation;
 
-        bullet.GetComponent<Rigidbody>().AddForce(transform.forward * 1600f);
+        bullet.GetComponent<Rigidbody>().AddForce(transform.forward * 2000f);
 
         bulletScript bulletScr = bullet.GetComponent<bulletScript>();
 
