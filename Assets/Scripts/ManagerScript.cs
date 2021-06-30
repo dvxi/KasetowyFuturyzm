@@ -35,6 +35,7 @@ public class ManagerScript : MonoBehaviour
 
     public void RemoveArea(GameObject obj)
     {
+        Destroy(obj);
         activeAreas.Remove(obj);
     }
 }

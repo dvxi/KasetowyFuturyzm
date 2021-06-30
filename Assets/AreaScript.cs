@@ -13,7 +13,6 @@ public class AreaScript : MonoBehaviour
         for (int i = 0; i < nearObects.Length; i++)
         {
             mng.RemoveArea(nearObects[i].gameObject);
-            Destroy(nearObects[i].gameObject);
         }
     }
 }

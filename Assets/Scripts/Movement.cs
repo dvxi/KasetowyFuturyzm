@@ -72,10 +72,12 @@ public class Movement : MonoBehaviour
 
         controller.Move(move * speed * Time.deltaTime); //move
 
-        if(Input.GetButtonDown("Jump") && isGrounded)
+        if (Input.GetButtonDown("Jump") && isGrounded)
         {
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * -9.81f);
         }
+
+        else if (isGrounded && velocity.y < 0) velocity.y = 0;
 
         velocity.y += gravity * Time.deltaTime;
 
@@ -102,6 +104,10 @@ public class Movement : MonoBehaviour
             speed *= .5f;
             SpeedParticles.emitting = true;
             SpeedParticles.startColor = slowColor;
+        } 
+        else if(other.name == "Disk")
+        {
+            Debug.Log("save");
         }
     }
 
