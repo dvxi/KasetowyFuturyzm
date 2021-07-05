@@ -56,6 +56,8 @@ public class Movement : MonoBehaviour
 
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
+        if (!Physics.CheckSphere(groundCheck.position, groundDistance, sphereMask)) inArea = false;
+
         if (Mathf.Abs(speed - desiredSpeed) <= 0.05f) //normal speed reached
         {
             SpeedParticles.emitting = false;
@@ -123,8 +125,8 @@ public class Movement : MonoBehaviour
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    /*private void OnTriggerExit(Collider other)
     {
         if (other.tag == "Boost" || other.tag == "Slow") inArea = false;
-    }
+    }*/
 }
