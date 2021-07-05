@@ -332,6 +332,7 @@
 "Assets/Scripts/ManagerScript.cs"
 "Assets/Scripts/Movement.cs"
 "Assets/Scripts/ShootScript.cs"
+"Assets/Scripts/UsableItemsHandler.cs"
 -langversion:8.0
 
 /deterministic

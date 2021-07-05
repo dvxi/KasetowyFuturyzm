@@ -8,7 +8,7 @@ public class bulletScript : MonoBehaviour
     public ManagerScript manager;
     public LayerMask wallLayer;
 
-    private void Update()
+    /*private void Update()
     {
         if (Physics.CheckSphere(transform.position, .5f, wallLayer))
         {
@@ -16,16 +16,16 @@ public class bulletScript : MonoBehaviour
             manager.CreateArea(type, transform.position);
             Destroy(gameObject);
         }
-    }
+    }*/
 
-    /*private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other.tag);
-        if (other.tag != "Boost" && other.tag != "Slow")
+        if (other.tag == "ShootingTarget")
         {
             gameObject.GetComponent<Rigidbody>().isKinematic = true;
             manager.CreateArea(type, transform.position);
-            //Destroy(gameObject);
+            Destroy(other.gameObject);
+            Destroy(gameObject);
         }
-    }*/
+    }
 }

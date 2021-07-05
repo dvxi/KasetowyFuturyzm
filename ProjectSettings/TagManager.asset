@@ -9,6 +9,7 @@ TagManager:
   - Slow
   - Danger
   - ShootingTarget
+  - Disk
   layers:
   - Default
   - TransparentFX
@@ -18,7 +19,7 @@ TagManager:
   - UI
   - Ground
   - Areas
-  - 
+  - Usable
   - 
   - 
   - 

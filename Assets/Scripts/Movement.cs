@@ -116,6 +116,7 @@ public class Movement : MonoBehaviour
                 SpeedParticles.startColor = slowColor;
                 break;
             case "Disk":
+                Destroy(other.gameObject);
                 Debug.Log("save");
                 break;
             case "Danger":

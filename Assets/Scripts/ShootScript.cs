@@ -12,12 +12,14 @@ public class ShootScript : MonoBehaviour
     public Transform desiredPosition;
     public LayerMask hitBoxLayer;
 
+
+    RaycastHit hit;
+    Ray ray;
     bool Shootable = true;
 
     void Update()
     {
-
-        Debug.LogWarning(Shootable);
+        ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0f));
 
         if (Input.GetButtonDown("Fire1") && Shootable)
         {
@@ -33,20 +35,13 @@ public class ShootScript : MonoBehaviour
 
     void Shoot(int type)
     {
-        RaycastHit hit;
-        Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0f));
 
         Shootable = false;
 
-        //if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, 2000f)) //temp range set to 100 units
         if (Physics.Raycast(ray, out hit, 2000f, hitBoxLayer))
         {
-            //Debug.Log(hit.transform.name);
-            //Debug.Log(hit.transform.position + " | " + transform.forward);
-
             GameObject point = Instantiate(pointer);
             point.transform.position = hit.point;
-            Destroy(point, .5f);
 
             GameObject bullet = Instantiate(bulletPrefab);
             bullet.transform.position = spawnPoint.position;
@@ -54,14 +49,10 @@ public class ShootScript : MonoBehaviour
 
             Vector3 moveVector = hit.point - bullet.transform.position;
 
-            //moveVector= Vector3.MoveTowards(bullet.transform.position, hit.transform.position, .5f);
-
             Debug.Log(bullet.transform.position + " | " + hit.point + " | " + moveVector + " | " + transform.forward);
 
-            //bullet.GetComponent<Rigidbody>().AddForce(transform.forward * 2000f);
             bullet.GetComponent<Rigidbody>().velocity = Vector3.zero;
             bullet.GetComponent<Rigidbody>().AddForce(moveVector * 2000f / Vector3.Distance(bullet.transform.position, hit.point));
-
 
             bulletScript bulletScr = bullet.GetComponent<bulletScript>();
 
