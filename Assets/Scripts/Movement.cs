@@ -27,7 +27,7 @@ public class Movement : MonoBehaviour
     Color slowColor;
 
     [SerializeField]
-    Vector3 spawnPoint;
+    Transform spawnPoint;
 
     public float speed = 12f;
     float gravity = -9.81f;
@@ -52,6 +52,8 @@ public class Movement : MonoBehaviour
 
     void Update()
     {
+        if(transform.position.y <= -20f) transform.position = spawnPoint.position;
+
         speed = Mathf.Clamp(speed, .2f, 36f);
 
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
@@ -118,7 +120,7 @@ public class Movement : MonoBehaviour
                 break;
             case "Danger":
                 Debug.LogError("Respawn");
-                transform.position = spawnPoint;
+                transform.position = spawnPoint.position;
                 break;
             default:
                 break;
