@@ -59,7 +59,7 @@
     <Compile Include="Assets\Scripts\CameraMov.cs" />
     <Compile Include="Assets\Scripts\Movement.cs" />
     <Compile Include="Assets\Scripts\ShootScript.cs" />
-    <Compile Include="Assets\AreaScript.cs" />
+    <Compile Include="Assets\Scripts\AreaScript.cs" />
     <Compile Include="Assets\Scripts\bulletScript.cs" />
     <Compile Include="Assets\FirstPersonMovementDemo\Scripts\MouseHandler.cs" />
     <Compile Include="Assets\Scripts\ManagerScript.cs" />

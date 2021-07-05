@@ -26,6 +26,9 @@ public class Movement : MonoBehaviour
     [SerializeField]
     Color slowColor;
 
+    [SerializeField]
+    Vector3 spawnPoint;
+
     public float speed = 12f;
     float gravity = -9.81f;
     public float jumpHeight = 3f;
@@ -49,6 +52,8 @@ public class Movement : MonoBehaviour
 
     void Update()
     {
+        speed = Mathf.Clamp(speed, .2f, 36f);
+
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
         if (Mathf.Abs(speed - desiredSpeed) <= 0.05f) //normal speed reached
@@ -86,28 +91,35 @@ public class Movement : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "Boost")
-        {
-            
-            inArea = true;
+        Debug.Log(other.tag);
 
-            gravity = lowerGravityValue;
-            speed *= 2f;
-            SpeedParticles.emitting = true;
-            SpeedParticles.startColor = boostColor;
-        } 
-        else if(other.tag == "Slow")
+        switch (other.tag)
         {
-            inArea = true;
+            case "Boost":
+                inArea = true;
 
-            gravity = lowerGravityValue;
-            speed *= .5f;
-            SpeedParticles.emitting = true;
-            SpeedParticles.startColor = slowColor;
-        } 
-        else if(other.name == "Disk")
-        {
-            Debug.Log("save");
+                gravity = lowerGravityValue;
+                speed *= 2f;
+                SpeedParticles.emitting = true;
+                SpeedParticles.startColor = boostColor;
+                break;
+            case "Slow":
+                inArea = true;
+
+                gravity = lowerGravityValue;
+                speed *= .5f;
+                SpeedParticles.emitting = true;
+                SpeedParticles.startColor = slowColor;
+                break;
+            case "Disk":
+                Debug.Log("save");
+                break;
+            case "Danger":
+                Debug.LogError("Respawn");
+                transform.position = spawnPoint;
+                break;
+            default:
+                break;
         }
     }
 

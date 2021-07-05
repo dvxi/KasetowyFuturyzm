@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ManagerScript : MonoBehaviour
 {
-    List<GameObject> activeAreas = new List<GameObject>();
+    //List<GameObject> activeAreas = new List<GameObject>();
 
     public GameObject areaPrefab;
     public Material[] areaMaterials;
@@ -22,20 +22,20 @@ public class ManagerScript : MonoBehaviour
         temp.GetComponent<MeshRenderer>().material = areaMaterials[type]; //0 boost orange, 1 slow blue
         temp.tag = tags[type];
         
-        activeAreas.Add(temp);
+        //activeAreas.Add(temp);
 
         //D+ebug.Log(activeAreas.Count);
 
-        if (activeAreas.Count > 3)
+        /*if (activeAreas.Count > 3)
         {
             Destroy(activeAreas[0]);
             activeAreas.RemoveAt(0);
-        }
+        }*/
     }
 
     public void RemoveArea(GameObject obj)
     {
         Destroy(obj);
-        activeAreas.Remove(obj);
+        //activeAreas.Remove(obj);
     }
 }
